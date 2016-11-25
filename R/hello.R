@@ -17,7 +17,7 @@ hello <- function() {
   print("Hello, world!")
 }
 
-setwd("Documents/stat243-fall-2016/problem-sets/final-project/")
+setwd("../Documents/stat243-fall-2016/problem-sets/final-project/")
 df <- read.csv("data/wines.csv", stringsAsFactors = FALSE)
 
 mfa <- function(data, sets=NULL, ncomps = NULL, center = TRUE, scale = TRUE) {
@@ -53,7 +53,8 @@ mfa <- function(data, sets=NULL, ncomps = NULL, center = TRUE, scale = TRUE) {
     eigenvalues = D.tilde^2,
     factor_scores = factor_scores,
     partial_factor_scores = P,
-    loadings = loadings
+    loadings = loadings,
+    A = A
   )
   class(object) <- "mfa"
   return(object)
@@ -141,5 +142,38 @@ extract <- function(mfa) {
   eigen_cum <- round(cumsum(mfa$eigenvalues),3)
   perc_inertia <- round(mfa$eigenvalues / sum(mfa$eigenvalues),2) * 100
   perc_cum <- round(cumsum(mfa$eigenvalues / sum(mfa$eigenvalues)),2) * 100
-  df <- rbind(sing_vals,eigen,eigen_cum,perc_inertia,perc_cum)
+  df <- cbind(sing_vals,eigen,eigen_cum,perc_inertia,perc_cum)
+}
+
+obs_to_dim <- function(mfa) {
+  M <- sapply(1:length(mfa$eigenvalues), function(i) (1/12 * mfa$factor_scores[,i]^2) / mfa$eigenvalues[i])
+  return(M)
+}
+
+var_to_dim <- function(mfa) {
+  mfa$A %*% mfa$loadings^2
+}
+
+tbl_to_dim <- function(mfa,loc) {
+  v2d <- var_to_dim(mfa)
+  M <- matrix(nrow=10,ncol=12)
+  for (i in 1:nrow(loc)) {
+    M[i,] <- apply(v2d,2,function(x) sum(x[loc[i,1]:loc[i,2]]))
+  }
+  return(M)
+}
+
+RV <- function(table1, table2) {
+  num <- sum(diag((tcrossprod(table1) %*% tcrossprod(table2))))
+  den <- sqrt(sum(diag(tcrossprod(table1) %*% tcrossprod(table1))) *
+              sum(diag(tcrossprod(table2) %*% tcrossprod(table2))))
+  return(num/den)
+}
+
+RV_table <- function(dataset, sets=list(1:3,4:5,6:10)) {
+  M <- diag(length(sets))
+  for (i in 1:length(sets)) {
+
+  }
+
 }
