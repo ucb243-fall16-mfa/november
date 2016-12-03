@@ -1,0 +1,10 @@
+name: mfa_shiny
+title: mfa_shiny
+account: jesellers
+server: shinyapps.io
+appId: 141850
+bundleId: 634272
+url: https://jesellers.shinyapps.io/mfa_shiny/
+when: 1480724079.79174
+asMultiple: FALSE
+asStatic: FALSE

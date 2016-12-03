@@ -78,9 +78,6 @@ check_params <-function(data, sets) {
       stop("sets must be a numeric or character vector")
     }
   }
-  if (length(sets) > ncol(df) | length(sets) < 1) {
-    stop("length of sets must be at least 1 and <= the length of data columns")
-  }
   return(TRUE)
 }
 
