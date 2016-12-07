@@ -1,0 +1,114 @@
+---
+title: "Multiple Factor Analysis"
+author: "Jason Sellers"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+The mfa package is an R package that implements Multiple Factor Analysis (MFA). For a complete description of MFA, see the paper "Multiple Factor Analysis" (Abdi, Williams, Valentin, 2013).
+
+The working sample consists of a wine tasting experiment, which includes data on 12 wines from three regions (New Zealand, France, and Canada). Ten experts were asked to evaluate these wines on a 9-point rating scale. This package computes the MFA for the wine tasting experiment and provides additional methods for performing various related functions and plotting the results.
+
+## The mfa function
+
+The package includes a main function, mfa(), with the following usage:
+
+```{r}
+library(mfa)
+df <- read.csv("../data/wines.csv", stringsAsFactors = FALSE)
+sets=list(2:7,8:13,14:19)
+mfa1 <- mfa(df, sets, ncomps = NULL, center = TRUE, scale = TRUE)
+```
+
+where the arguments are:
+
+* **data**: data set (matrix or data frame).
+* **sets**: list of vectors indicating the sets of variables (i.e. the blocks).
+* **ncomps**: integer indicating how many number of components (i.e. factors) are to be extracted.
+* **center**: either a logical value or a numeric vector of length equal to the number of active
+variables in the analysis
+* **scale**: either a logical value or a numeric vector of length equal to the number of active
+variables in the analysis
+
+The mfa function returns an object with the following elements:
+
+* **eigenvalues**: a vector containing the eigenvalues
+* **factor_scores**: a matrix of common factor scores
+* **partial_factor_scores**: a matrix of partial factor scores
+* **loadings**: a matrix of factor loadings
+
+## Plotting Functions
+
+There are three plotting auxiliary functions that can be used with mfa objects:
+
+* **plot.comp**: compromise of the tables
+* **plot.pfs**: partial factor scores
+* **plot.loadings**: variable loadings
+
+To use each function, simply pass the mfa object to the function, as in the following examples.
+
+```{r}
+plot_comp(mfa1)
+```
+
+```{r}
+plot_pfs(mfa1)
+```
+
+```{r}
+graphics.off()
+plot_loadings(mfa1)
+```
+
+## Auxilary Functions
+
+There are five complementary methods and functions which can be used with mfa objects:
+
+* **eigentbl**: table summary of eigenvalues (singular values, eigenvalues, cumulative, % inertia, cumulative % inertia)
+* **ob2dim**: contribution of an observation to a dimension
+* **var2dim**: contribution of a variable to a dimension
+* **tbl2dim**: contribution of a table to a dimension
+* **RV**: similarity between two tables using the Rv coefficient
+* **RVtbl**: similarity between multiple tables using the Rv coefficient
+
+Each function is used in the following examples:
+
+## eigentbl
+
+```{r}
+eigentbl(mfa1)
+```
+
+## ob2dim
+
+```{r}
+ob2dim(mfa1)
+```
+
+## var2dim
+
+```{r}
+var2dim(mfa1)
+```
+
+## tbl2dim
+
+```{r}
+tbl2dim(mfa1)
+```
+
+## RV
+
+```{r}
+RV(df[,2:7],df[8:13])
+```
+
+## RVtbl
+
+```{r}
+RVtbl(df,sets=list(2:7,8:13,14:19))
+```
