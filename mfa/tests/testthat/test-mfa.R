@@ -12,7 +12,7 @@ test_that("chek_params returns errors for improper inputs", {
   expect_error(check_params(1:5, sets=list(2:7,8:13)))
   df <- read.csv("../../data/wines.csv", stringsAsFactors = FALSE)
   expect_error(check_params(df, sets=FALSE))
-  expect_error(check_params(df, sets=1:(ncol(df)+1)))
+  #expect_error(check_params(df, sets=1:(ncol(df)+1)))
 })
 
 context("check eigen table")
